@@ -133,6 +133,7 @@ MARSHAL(lldpd_dot3_power);
 struct cdpv2_power {
 	u_int16_t request_id;
 	u_int16_t management_id;
+	int cdp_poe_used;
 };
 #endif
 

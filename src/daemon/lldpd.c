@@ -1007,6 +1007,7 @@ lldpd_dot3_power_pd_pse(struct lldpd_hardware *hardware)
 #ifdef ENABLE_CDP
 	if (selected_port && selected_port->p_cdp_power.management_id != hardware->h_lport.p_cdp_power.management_id) {
 		hardware->h_lport.p_cdp_power.management_id = selected_port->p_cdp_power.management_id;
+		hardware->h_lport.p_cdp_power.cdp_poe_used = 1;
 	}
 #endif
 

@@ -923,6 +923,20 @@ lldp_decode(struct lldpd *cfg, char *frame, int s,
 					} else
 						port->p_power.powertype =
 						    LLDP_DOT3_POWER_8023AT_OFF;
+#ifdef ENABLE_CDP
+					/* If CDP is already used for PoE negotiation then lldp
+					 * broadcasting of PoE support should be ignored.
+					 * The opposite is handled by the cdp protocol. PoE broadcasting
+					 * TLVs are ignored if request-id is 0 which means it is a generic
+					 * broadcast of PoE neg capability.
+					 */
+					if (hardware->h_lport.p_cdp_power.cdp_poe_used &&
+					    port->p_power.devicetype == LLDP_DOT3_POWER_PSE &&
+					    port->p_power.requested != hardware->h_lport.p_power.requested) {
+						memset(&port->p_power, 0, sizeof(port->p_power));
+					}
+#endif
+
 					break;
 				default:
 					/* Unknown Dot3 TLV, ignore it */

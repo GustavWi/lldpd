@@ -590,6 +590,7 @@ cdp_decode(struct lldpd *cfg, char *frame, int s,
 			/* check if it is a respone to a request id */
 			if (PEEK_UINT16 > 0) {
 				port->p_cdp_power.management_id = PEEK_UINT16;
+				port->p_cdp_power.cdp_poe_used = 1;
 				port->p_power.allocated = PEEK_UINT32;
 				port->p_power.allocated /= 100;
 				port->p_power.supported = 1;
@@ -605,6 +606,8 @@ cdp_decode(struct lldpd *cfg, char *frame, int s,
 					port->p_power.allocated = 0;
 				}
 				port->p_power.requested = hardware->h_lport.p_power.requested;
+			} else {
+				hardware->h_lport.p_cdp_power.cdp_poe_used = 0;
 			}
 			break;
 #endif
